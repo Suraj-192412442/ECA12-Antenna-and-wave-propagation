@@ -1,0 +1,51 @@
+clc;
+clear;
+close all;
+%% Objective 1 : Space Wave Propagation
+f = 900; % Frequency (MHz)
+Pt = 30; % Transmit Power (dBm)
+d = 1:1:100; % Distance (km)
+FSPL = 32.44 + 20*log10(f) + 20*log10(d);
+Pr = Pt - FSPL;
+%% Objective 2 : LOS and Radio Horizon
+ht = 50; % Transmitter Height (m)
+hr = 25; % Receiver Height (m)
+d_LOS = 4.12*(sqrt(ht)+sqrt(hr));
+%% Objective 3 : Link Budget Analysis
+Gt = 10; % Tx Gain (dB)
+Gr = 8; % Rx Gain (dB)
+Pr_link = Pt + Gt + Gr - FSPL;
+%% Display Results
+fprintf('\nSPACE WAVE PROPAGATION ANALYSIS\n');
+fprintf('---------------------------------\n');
+fprintf('Operating Frequency = %.0f MHz\n',f);
+fprintf('LOS Distance = %.2f km\n',d_LOS);
+fprintf('Received Power at 10 km = %.2f dBm\n',Pr(10));
+%% Plot Results
+figure('Name',...
+    'Space Wave Propagation Characteristics',...
+    'NumberTitle','off');
+subplot(2,2,1)
+plot(d,FSPL,'LineWidth',2)
+grid on
+xlabel('Distance (km)')
+ylabel('FSPL (dB)')
+title('Free Space Path Loss')
+subplot(2,2,2)
+plot(d,Pr,'LineWidth',2)
+grid on
+xlabel('Distance (km)')
+ylabel('Received Power (dBm)')
+title('Received Power vs Distance')
+subplot(2,2,3)
+bar(d_LOS)
+grid on
+title('LOS Communication Range')
+ylabel('Distance (km)')
+set(gca,'XTickLabel',{'LOS Range'})
+subplot(2,2,4)
+plot(d,Pr_link,'LineWidth',2)
+grid on
+xlabel('Distance (km)')
+ylabel('Power (dBm)')
+title('Link Budget Analysis')
