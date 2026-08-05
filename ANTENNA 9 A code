@@ -1,0 +1,46 @@
+clc;
+clear;
+close all;
+%% Objective 1: Ground Wave Propagation
+Pt = 10; % Transmitted Power (kW)
+d = 1:1:500; % Distance (km)
+E_ground = (300*sqrt(Pt))./d;
+%% Objective 2 : Sky Wave Propagation
+h = 250; % Ionosphere Height (km)
+theta = 60; % Angle of Incidence (degrees)
+fc = 5; % Critical Frequency (MHz)
+Skip_Distance = 2*h*tand(theta);
+MUF = fc*sec(deg2rad(theta));
+%% Objective 3 : Comparative Analysis
+Sky_Range = Skip_Distance*ones(size(d));
+%% Display Results
+fprintf('\nGROUND WAVE AND SKY WAVE ANALYSIS\n');
+fprintf('---------------------------------\n');
+fprintf('Transmitted Power = %.2f kW\n',Pt);
+fprintf('Ionospheric Height = %.2f km\n',h);
+fprintf('Skip Distance = %.2f km\n',Skip_Distance);
+fprintf('Maximum Usable Frequency (MUF) = %.2f MHz\n',MUF);
+%% Plot Results
+figure('Name',...
+    'Ground Wave and Sky Wave Propagation',...
+    'NumberTitle','off');
+subplot(2,2,1)
+plot(d,E_ground,'LineWidth',2)
+grid on
+xlabel('Distance (km)')
+ylabel('Field Strength (mV/m)')
+title('Ground Wave Propagation')
+subplot(2,2,2)
+bar(MUF)
+grid on
+title('Maximum Usable Frequency')
+ylabel('Frequency (MHz)')
+set(gca,'XTickLabel',{'MUF'})
+subplot(2,2,3)
+bar(Skip_Distance)
+grid on
+title('Skip Distance')
+ylabel('Distance (km)')
+set(gca,'XTickLabel',{'Sky Wave'})
+subplot(2,2,4)
+plot(d,E)
